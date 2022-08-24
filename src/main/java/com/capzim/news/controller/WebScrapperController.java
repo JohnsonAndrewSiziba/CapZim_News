@@ -2,6 +2,7 @@ package com.capzim.news.controller;
 
 import com.capzim.news.model.WebScrapperOptionsModel;
 import com.capzim.news.webscrapper.NewsdayScrapper;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,11 +24,16 @@ public class WebScrapperController {
 
     private final NewsdayScrapper newsdayScrapper;
 
+
+    /**
+     * Run news web-scrapper
+     */
     @PostMapping("/")
+    @Operation(summary = "Run news web scrapper")
     public String doWebScrapping(@RequestBody WebScrapperOptionsModel optionsModel){
         log.info("Inside doWebScrapping of WebScrapperController");
         if (optionsModel.isNewsDay()){
-            log.info("Newsday web scrapper");
+            log.info("News day web scrapper");
             newsdayScrapper.doWebScrapping();
             newsdayScrapper.persistToDatabase();
         }
