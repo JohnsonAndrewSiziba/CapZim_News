@@ -1,9 +1,8 @@
 package com.capzim.news.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -18,10 +18,11 @@ import java.util.UUID;
  * @version 1.0
  */
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Publication {
     @Id
     @GeneratedValue
@@ -39,6 +40,8 @@ public class Publication {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
+    @ToString.Exclude
+    @JsonIgnoreProperties("publication")
     private List<NewsArticle> newsArticles;
 
     @CreationTimestamp
@@ -47,9 +50,20 @@ public class Publication {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-//    public Publication(String name, String description, String homeUrl) {
-//        this.name = name;
-//        this.description = description;
-//        this.homeUrl = homeUrl;
-//    }
+    public void addNewsArticle(NewsArticle newsArticle){
+        newsArticles.add(newsArticle);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Publication that = (Publication) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

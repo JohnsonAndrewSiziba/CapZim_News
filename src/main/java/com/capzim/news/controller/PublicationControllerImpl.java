@@ -1,15 +1,16 @@
 package com.capzim.news.controller;
 
-import com.capzim.news.dto.PublicationRequestDto;
+import com.capzim.news.model.PublicationNameResponseModel;
+import com.capzim.news.model.PublicationRequestModel;
 import com.capzim.news.entity.Publication;
 import com.capzim.news.service.PublicationServiceImpl;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,9 +33,19 @@ public class PublicationControllerImpl implements PublicationController {
     @Override
     @GetMapping("/")
     @Operation(summary = "Get all publications")
-    public List<Publication> getAllPublications() {
+    public List<PublicationNameResponseModel> getAllPublications() {
         log.info("Getting all publications from database");
-        return publicationService.findAll();
+        List<Publication> publications = publicationService.findAll();
+
+        List<PublicationNameResponseModel> publicationNameResponseModels = new ArrayList<>();
+
+        for (Publication publication : publications)
+        {
+            PublicationNameResponseModel publicationNameResponseModel = new PublicationNameResponseModel(publication);
+            publicationNameResponseModels.add(publicationNameResponseModel);
+        }
+
+        return publicationNameResponseModels;
     }
 
 
@@ -45,9 +56,10 @@ public class PublicationControllerImpl implements PublicationController {
     @GetMapping(value = "/{id}")
     @RouterOperation()
     @Operation(summary = "Get publication by id")
-    public Publication getPublicationById(@PathVariable UUID id) {
+    public PublicationNameResponseModel getPublicationById(@PathVariable UUID id) {
         log.info("Getting publication: {}", id.toString());
-        return publicationService.findPublicationById(id);
+        Publication publication = publicationService.findPublicationById(id);
+        return new PublicationNameResponseModel(publication);
     }
 
 
@@ -55,12 +67,10 @@ public class PublicationControllerImpl implements PublicationController {
      * get publication by ID and all associated news
      */
     @Override
-    @GetMapping("/{id}/news")
+    @GetMapping("/{id}/news_articles")
     @Operation(summary = "Find publication by ID and get associated news")
     public Publication getPublicationByIdWithNews(@PathVariable UUID id) {
-        Publication publication = publicationService.findPublicationById(id);
-        publication.setNewsArticles(publication.getNewsArticles());
-        return publication;
+        return publicationService.findPublicationById(id);
     }
 
 
@@ -105,14 +115,15 @@ public class PublicationControllerImpl implements PublicationController {
     @Override
     @PutMapping("/{id}")
     @Operation(summary = "Update publication")
-    public Publication editPublication(@RequestBody PublicationRequestDto publicationRequestDto, @PathVariable UUID id) {
+    public Publication editPublication(@RequestBody PublicationRequestModel publicationRequestModel, @PathVariable UUID id) {
         Publication publication = publicationService.findPublicationById(id);
-        publication.setName(publicationRequestDto.getName());
-        publication.setHomeUrl(publicationRequestDto.getHomeUrl());
-        publication.setDescription(publicationRequestDto.getDescription());
+        publication.setName(publicationRequestModel.getName());
+        publication.setHomeUrl(publicationRequestModel.getHomeUrl());
+        publication.setDescription(publicationRequestModel.getDescription());
         publicationService.savePublication(publication);
         return publicationService.savePublication(publication);
     }
+
 
     /**
      * Delete saved publication

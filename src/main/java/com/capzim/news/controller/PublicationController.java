@@ -1,6 +1,7 @@
 package com.capzim.news.controller;
 
-import com.capzim.news.dto.PublicationRequestDto;
+import com.capzim.news.model.PublicationNameResponseModel;
+import com.capzim.news.model.PublicationRequestModel;
 import com.capzim.news.entity.Publication;
 
 import java.util.List;
@@ -12,9 +13,9 @@ import java.util.UUID;
  */
 
 public interface PublicationController {
-    public List<Publication> getAllPublications();
+    public List<PublicationNameResponseModel> getAllPublications();
 
-    public Publication getPublicationById(UUID id);
+    public PublicationNameResponseModel getPublicationById(UUID id);
 
     public Publication getPublicationByIdWithNews(UUID id);
 
@@ -24,7 +25,7 @@ public interface PublicationController {
 
     public Publication savePublication(Publication publication);
 
-    public Publication editPublication(PublicationRequestDto publication, UUID id);
+    public Publication editPublication(PublicationRequestModel publication, UUID id);
 
     public void removePublication(UUID id);
 

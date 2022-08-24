@@ -3,6 +3,8 @@ package com.capzim.news.repository;
 import com.capzim.news.entity.NewsArticle;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -11,4 +13,9 @@ import java.util.UUID;
  */
 
 public interface NewsArticleRepository extends JpaRepository<NewsArticle, UUID> {
+    List<NewsArticle> getNewsArticleByDate(Date date);
+
+    NewsArticle findArticleById(UUID id);
+
+    NewsArticle findNewsArticleByUrl(String url);
 }

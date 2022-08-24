@@ -1,16 +1,16 @@
 package com.capzim.news.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+import org.hibernate.Hibernate;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -19,10 +19,12 @@ import java.util.UUID;
  */
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 @ToString
+@RequiredArgsConstructor
+@AllArgsConstructor
+@Table(indexes = @Index(columnList = "url"))
 public class NewsArticle {
     @Id
     @GeneratedValue
@@ -30,17 +32,25 @@ public class NewsArticle {
     public UUID id;
 
     private String title;
+
+    @Basic
     private Date date;
+
     private String url;
     private String imageUrl;
+    private String newsDocumentUrl;
+
+    private String extract;
+
+    @Column(columnDefinition = "TEXT")
     private String articleContent;
 
     @ManyToOne(
             fetch = FetchType.EAGER,
-            optional = false,
-            cascade = CascadeType.ALL
+            optional = false
     )
     @JoinColumn(name = "publication_id", referencedColumnName = "id")
+    @JsonIgnoreProperties("newsArticles")
     private Publication publication;
 
     @CreationTimestamp
@@ -48,4 +58,17 @@ public class NewsArticle {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        NewsArticle that = (NewsArticle) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
