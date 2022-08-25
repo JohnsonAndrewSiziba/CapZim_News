@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/api/v1/web_scrapper")
+@RequestMapping("/api/v1/news/web_scrapper")
 @RequiredArgsConstructor
 @Slf4j
 public class WebScrapperController {
@@ -33,6 +33,7 @@ public class WebScrapperController {
     public String doWebScrapping(@RequestBody WebScrapperOptionsModel optionsModel){
         log.info("Inside doWebScrapping of WebScrapperController");
         if (optionsModel.isNewsDay()){
+
             log.info("News day web scrapper");
             newsdayScrapper.doWebScrapping();
             newsdayScrapper.persistToDatabase();

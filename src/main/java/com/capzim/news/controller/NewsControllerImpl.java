@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/news_articles")
+@RequestMapping("/api/v1/news")
 @Slf4j
 public class NewsControllerImpl implements NewsController{
 

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.RouterOperation;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/publications")
+@RequestMapping("/api/v1/news/publications")
 @Slf4j
+@EnableDiscoveryClient
 public class PublicationControllerImpl implements PublicationController {
     private final PublicationServiceImpl publicationService;
 
