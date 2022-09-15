@@ -3,9 +3,15 @@ package com.capzim.news.service;
 import com.capzim.news.entity.NewsArticle;
 import com.capzim.news.repository.NewsArticleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
@@ -66,5 +72,17 @@ public class NewsArticleServiceImpl implements NewsArticleService{
         java.sql.Date date = new  java.sql.Date(cal.getTimeInMillis());
         List<NewsArticle> newsArticles = newsArticleRepository.findNewsArticlesByDateLessThan(date);
         newsArticleRepository.deleteAll(newsArticles);
+    }
+
+    public List<NewsArticle> getAllArticlesPaginated(Integer pageNumber, Integer pageSize, String sortBy) {
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy).descending());
+
+        Page<NewsArticle> pagedResult = newsArticleRepository.findAll(paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<NewsArticle>();
+        }
     }
 }

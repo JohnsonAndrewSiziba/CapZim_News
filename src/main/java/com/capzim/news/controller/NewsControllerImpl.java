@@ -36,26 +36,28 @@ public class NewsControllerImpl implements NewsController{
     private final NewsArticleServiceImpl newsArticleService;
     private final PublicationServiceImpl publicationService;
 
-
-    @GetMapping("/test_date")
-    public Date testing(){
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -30);
-        java.sql.Date date = new  java.sql.Date(cal.getTimeInMillis());
-        return date;
-    }
-
-
     /**
      * Get All Saved Articles
      */
     @Override
-    @GetMapping("/")
+    @GetMapping("/index")
     @Operation(summary = "Get All Saved Articles")
     public List<NewsArticle> getAllArticles() {
         log.info("Inside getAllArticles of NewsController.");
 
         return newsArticleService.getAllArticles();
+    }
+
+    @GetMapping("/get_all_articles_paginated")
+    @Operation(summary = "Get All Articles Paginated")
+    public ResponseEntity<List<NewsArticle>> getAllArticlesPaginated(
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "date") String sortBy
+    ){
+        List<NewsArticle> newsArticles = newsArticleService.getAllArticlesPaginated(pageNumber, pageSize, sortBy);
+
+        return ResponseEntity.ok().body(newsArticles);
     }
 
 
@@ -78,9 +80,7 @@ public class NewsControllerImpl implements NewsController{
         newsArticle.setUrl(newsArticleRequestModel.getUrl());
         newsArticle.setImageUrl(newsArticleRequestModel.getImageUrl());
         newsArticle.setArticleContent(newsArticleRequestModel.getArticleContent());
-
         return newsArticleService.saveNewsArticle(newsArticle);
-
     }
 
 
