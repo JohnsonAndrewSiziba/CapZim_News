@@ -34,6 +34,12 @@ public class Publication {
     private String description;
     private String homeUrl;
 
+    @Lob
+    private byte[] publicationLogoFile;
+    private String publicationLogoFileName;
+    private String publicationLogoFileType;
+
+
     @OneToMany(
             mappedBy = "publication",
             fetch = FetchType.LAZY,

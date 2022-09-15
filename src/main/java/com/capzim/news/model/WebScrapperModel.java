@@ -20,6 +20,8 @@ public class WebScrapperModel {
 
     private Date date;
 
+    private FileModel fileModel;
+
 
     public NewsArticle generateNewsArticle(Publication publication){
         NewsArticle newsArticle = new NewsArticle();
@@ -29,6 +31,10 @@ public class WebScrapperModel {
         newsArticle.setPublication(publication);
         newsArticle.setDate(this.date);
         newsArticle.setUrl(this.url);
+
+        newsArticle.setImageFile(fileModel.getFileData());
+        newsArticle.setImageFileType(fileModel.getContentType());
+        newsArticle.setImageFileName(date.toString());
 
         return newsArticle;
     }

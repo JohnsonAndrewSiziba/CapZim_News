@@ -8,6 +8,11 @@ import com.capzim.news.service.PublicationServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -50,11 +55,11 @@ public class NewsControllerImpl implements NewsController{
     @Override
     @PostMapping("/")
     @Operation(summary = "Save New Article")
+    // TODO: 14/9/2022 Update to accept file data
     public NewsArticle saveNewsArticle(@RequestBody NewsArticleRequestModel newsArticleRequestModel) {
         log.info("Inside saveNewsArticle of NewsController.");
 
         Publication publication = publicationService.findPublicationById(newsArticleRequestModel.getPublicationId());
-
 
         NewsArticle newsArticle = new NewsArticle();
         newsArticle.setPublication(publication);
@@ -79,6 +84,28 @@ public class NewsControllerImpl implements NewsController{
         log.info("Inside getArticleById of NewsController. ID: {}", id.toString());
 
         return newsArticleService.getArticleById(id);
+    }
+
+
+    @GetMapping("/images/download/{id}")
+    @Operation(summary = "Download article image")
+    public ResponseEntity<Resource> downloadArticleImage(@PathVariable UUID id){
+
+        NewsArticle newsArticle = newsArticleService.getArticleById(id);
+
+        if (newsArticle == null){
+            return ResponseEntity.notFound().header("error", "entity not found").build();
+        }
+
+        if (newsArticle.getImageFile() == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(newsArticle.getImageFileType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + newsArticle.getImageFileName() + "\"")
+                .body(new ByteArrayResource(newsArticle.getImageFile()));
+
     }
 
 

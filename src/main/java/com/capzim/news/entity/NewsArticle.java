@@ -1,5 +1,6 @@
 package com.capzim.news.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -40,16 +41,32 @@ public class NewsArticle {
     private String imageUrl;
     private String newsDocumentUrl;
 
+    @Lob
+    @JsonIgnore
+    private byte[] documentFile;
+    @JsonIgnore
+    private String documentFileName;
+    @JsonIgnore
+    private String documentFileType;
+
     private String extract;
 
     @Column(columnDefinition = "TEXT")
     private String articleContent;
 
+    @Lob
+    @JsonIgnore
+    private byte[] imageFile;
+    @JsonIgnore
+    private String imageFileName;
+    @JsonIgnore
+    private String imageFileType;
+
     @ManyToOne(
             fetch = FetchType.EAGER,
             optional = false
     )
-    @JoinColumn(name = "publication_id", referencedColumnName = "id")
+    @JoinColumn(name="publication_id", referencedColumnName = "id")
     @JsonIgnoreProperties("newsArticles")
     private Publication publication;
 

@@ -1,7 +1,11 @@
 package com.capzim.news.webscrapper;
+
 import com.capzim.news.model.WebScrapperModel;
+import com.capzim.news.service.PublicationServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
@@ -16,15 +20,17 @@ import java.util.Objects;
  * @version 1.0
  */
 
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class NewsdayScrapper extends  WebScrapper{
+public class TheIndependentScrapper extends  WebScrapper{
 
+    private final PublicationServiceImpl publicationService;
 
 
     /**
-    Newsday Url: https://www.newsday.co.zw/category/business/
+     * The Independent Url: https://www.theindependent.co.zw/zimbabwe-business-stories/
      */
     @Override
     public void getArticlesFromDocument() {
@@ -39,8 +45,8 @@ public class NewsdayScrapper extends  WebScrapper{
             String imageUrl = Objects.requireNonNull(article.selectFirst(".entry-thumb.td-thumb-css")).attr("data-img-url");
             Date articleDate = Date.valueOf(
                     Objects.requireNonNull(article.selectFirst(".entry-date"))
-                    .attr("datetime")
-                    .split("T")[0]
+                            .attr("datetime")
+                            .split("T")[0]
             );
 
             WebScrapperModel webScrapperModel = new WebScrapperModel();

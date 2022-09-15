@@ -33,7 +33,7 @@ public class PublicationControllerImpl implements PublicationController {
      * Get all saved publications
      */
     @Override
-    @GetMapping("/")
+    @GetMapping("/index")
     @Operation(summary = "Get all publications")
     public List<PublicationNameResponseModel> getAllPublications() {
         log.info("Getting all publications from database");
@@ -104,7 +104,7 @@ public class PublicationControllerImpl implements PublicationController {
      * Add new publication to database
      */
     @Override
-    @PostMapping("/")
+    @PostMapping("/create")
     @Operation(summary = "Add new publication")
     public Publication savePublication(@RequestBody Publication publication) {
         return publicationService.savePublication(publication);
