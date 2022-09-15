@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public interface NewsArticleRepository extends JpaRepository<NewsArticle, UUID> {
     List<NewsArticle> getNewsArticleByDate(Date date);
+    List<NewsArticle> findNewsArticlesByDateLessThan(Date date);
 
     NewsArticle findArticleById(UUID id);
 

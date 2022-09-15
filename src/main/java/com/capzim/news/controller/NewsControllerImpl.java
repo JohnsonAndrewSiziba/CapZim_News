@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +35,15 @@ public class NewsControllerImpl implements NewsController{
 
     private final NewsArticleServiceImpl newsArticleService;
     private final PublicationServiceImpl publicationService;
+
+
+    @GetMapping("/test_date")
+    public Date testing(){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -30);
+        java.sql.Date date = new  java.sql.Date(cal.getTimeInMillis());
+        return date;
+    }
 
 
     /**

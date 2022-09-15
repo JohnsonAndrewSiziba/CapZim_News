@@ -59,4 +59,12 @@ public class NewsArticleServiceImpl implements NewsArticleService{
     public NewsArticle findNewsArticleByUrl(String url) {
         return newsArticleRepository.findNewsArticleByUrl(url);
     }
+
+    public void deleteOldNewsArticles() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, - 60); // Two months
+        java.sql.Date date = new  java.sql.Date(cal.getTimeInMillis());
+        List<NewsArticle> newsArticles = newsArticleRepository.findNewsArticlesByDateLessThan(date);
+        newsArticleRepository.deleteAll(newsArticles);
+    }
 }
