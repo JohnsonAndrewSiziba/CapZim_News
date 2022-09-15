@@ -108,6 +108,13 @@ public class NewsApplication {
 				publication.setHomeUrl("https://www.nytimes.com/international/section/business");
 				publicationService.savePublication(publication);
 
+
+				publication = new Publication();
+				publication.setName("Trading Economics");
+				publication.setDescription("Trading Economics provides data for several commodities");
+				publication.setHomeUrl("https://tradingeconomics.com/stream");
+				publicationService.savePublication(publication);
+
 			}
 		};
 	}

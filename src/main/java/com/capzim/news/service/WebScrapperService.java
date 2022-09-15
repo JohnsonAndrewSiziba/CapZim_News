@@ -42,6 +42,8 @@ public class WebScrapperService {
 
     private final TheNewYorkTimesScrapper theNewYorkTimesScrapper;
 
+    private final TradingEconomicsScrapper tradingEconomicsScrapper;
+
     @Async
     public void doWebScrapping(List<UUID> uuidList){
         List<Publication> publicationList = publicationService.findAll();
@@ -101,6 +103,10 @@ public class WebScrapperService {
                     case "The New York Times" -> {
                         log.info("Case The New York Times");
                         theNewYorkTimesScrapper.doWebScrapping(publication);
+                    }
+                    case "Trading Economics" -> {
+                        log.info("Case Trading Economics");
+                        tradingEconomicsScrapper.doWebScrapping(publication);
                     }
                     default ->
                         // No match
