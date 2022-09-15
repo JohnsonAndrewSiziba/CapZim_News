@@ -39,6 +39,8 @@ public class WebScrapperService {
 
     private final TimeWebScrapper timeWebScrapper;
 
+    private final TheNewYorkTimesScrapper theNewYorkTimesScrapper;
+
     public void doWebScrapping(List<UUID> uuidList){
         List<Publication> publicationList = publicationService.findAll();
 
@@ -49,7 +51,7 @@ public class WebScrapperService {
                         log.info("Case Newsday");
                         newsdayScrapper.doWebScrapping(publication);
                     }
-                    case "The Independent" -> {
+                    case "The Zimbabwe Independent" -> {
                         log.info("Case The Independent");
                         theIndependentScrapper.doWebScrapping(publication);
                     }
@@ -92,6 +94,11 @@ public class WebScrapperService {
                     case "Time" -> {
                         log.info("Case Time");
                         timeWebScrapper.doWebScrapping(publication);
+                    }
+
+                    case "The New York Times" -> {
+                        log.info("Case The New York Times");
+                        theNewYorkTimesScrapper.doWebScrapping(publication);
                     }
                     default ->
                         // No match
