@@ -41,6 +41,7 @@ public class NewsControllerImpl implements NewsController{
     @Override
     @GetMapping("/index")
     @Operation(summary = "Get All Saved Articles")
+//    @CrossOrigin
     public List<NewsArticle> getAllArticles() {
         log.info("Inside getAllArticles of NewsController.");
 
