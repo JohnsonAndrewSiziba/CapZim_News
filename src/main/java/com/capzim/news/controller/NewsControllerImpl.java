@@ -48,6 +48,14 @@ public class NewsControllerImpl implements NewsController{
         return newsArticleService.getAllArticles();
     }
 
+    @GetMapping("/articles/count")
+    @Operation(summary = "Count Articles")
+    public ResponseEntity<Long> countArticles(){
+        log.info("Inside countArticles of NewsController.");
+        long count = newsArticleService.countArticles();
+        return ResponseEntity.ok().body(count);
+    }
+
     @GetMapping("/get_all_articles_paginated")
     @Operation(summary = "Get All Articles Paginated")
     public ResponseEntity<List<NewsArticle>> getAllArticlesPaginated(

@@ -19,4 +19,5 @@ public interface NewsArticleRepository extends JpaRepository<NewsArticle, UUID> 
     NewsArticle findArticleById(UUID id);
 
     NewsArticle findNewsArticleByUrl(String url);
+
 }

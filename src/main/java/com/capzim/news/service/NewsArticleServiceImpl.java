@@ -85,4 +85,8 @@ public class NewsArticleServiceImpl implements NewsArticleService{
             return new ArrayList<NewsArticle>();
         }
     }
+
+    public long countArticles() {
+        return newsArticleRepository.count();
+    }
 }
