@@ -38,7 +38,6 @@ public class BloombergScrapper extends WebScrapper{
 
         for(Element article: articleComponents){
 
-            System.out.println(article);
             System.out.println("==============================================");
         }
     }

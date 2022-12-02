@@ -41,7 +41,8 @@ public class TheSundayMailScrapper extends WebScrapper{
             try {
                 String articleTitle = article.selectFirst(".entry-title.list-article-title").text();
                 String articleUrl = article.selectFirst("a").attr("href");
-                String imageUrl = article.selectFirst("link").attr("href");
+//                String imageUrl = article.selectFirst("link").attr("href");
+                String imageUrl = "https://t792ae.c2.acecdn.net/wp-content/uploads/2019/02/The-Sunday-Mail-New-Price.jpeg";
                 Date articleDate  = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
                 FileModel fileModel = this.readUrlToByteArray(imageUrl);
